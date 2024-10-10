@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import {DM_Sans} from "next/font/google"
 import "./globals.css";
+import ReactQueryProvider from "@/utils/provider/QueryProvider";
 
 const dm_serif = DM_Sans({
   weight:["100","200","400","700"],
@@ -20,11 +21,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <ReactQueryProvider>
+
       <body
         className={`${dm_serif.className} antialiased`}
       >
         {children}
       </body>
+      </ReactQueryProvider>
     </html>
   );
 }
