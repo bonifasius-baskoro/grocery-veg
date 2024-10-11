@@ -1,9 +1,16 @@
 "use client";
 
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 
-const AddButton: FC = () => {
-  const [inCart, setInCart] = useState<boolean>(true);
+interface AddButtonProps{
+    inCart:boolean;
+    quota:number;
+    weight:number;
+    increment:number;
+
+}
+const AddButton: FC<AddButtonProps> = ({inCart, quota ,weight,increment}) => {
+  
   return (
     <div className="py-4">
       {inCart ? (
@@ -12,15 +19,16 @@ const AddButton: FC = () => {
             <h1 className="text-center mx-2 text-white">-</h1>
           </div>
             <h1>
-                1.2 kg
+                {(quota/1000).toFixed(2)} kg
             </h1>
-          <div className="rounded-full border border-gray-500 text-center flex items-center justify-center bg-black">
+          <button  
+          className="rounded-full border border-gray-500 text-center flex items-center justify-center bg-black">
             <h1 className="text-center mx-2 text-white">+</h1>
-          </div>
+          </button>
         </div>
       ) : (
         <div className="flex justify-between">
-          <h1>1 kg</h1>
+          <h1>{(weight/1000).toFixed(2)} kg</h1>
           <div className="rounded-full border border-gray-500 text-center flex items-center justify-center">
             <h1 className="text-center mx-2">+</h1>
           </div>

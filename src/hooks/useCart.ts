@@ -1,11 +1,12 @@
+import { getCart } from "@/api/cart";
 import { getProducts } from "@/api/product"
 import { useQuery } from "react-query"
 
 
-export const  useProduct= (query:string) =>{
+export const  useCart= () =>{
     const {data, isLoading, isError} = useQuery({
-        queryKey:['products',{query}],
-        queryFn: async ()=> await getProducts(query)
+        queryKey:['cart'],
+        queryFn: async ()=> await getCart()
     })
 
 
