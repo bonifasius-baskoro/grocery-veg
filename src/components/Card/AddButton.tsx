@@ -2,9 +2,10 @@
 
 import { CartItem, Product } from "@/app/types/project";
 import { useCart } from "@/hooks/useCart";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC } from "react";
 
 interface AddButtonProps {
+  element_id:string;
   inCart: boolean;
   quota: number;
   weight: number;
@@ -14,6 +15,7 @@ interface AddButtonProps {
 }
 
 const AddButton: FC<AddButtonProps> = ({
+  element_id,
   inCart,
   quota,
   weight,
@@ -68,7 +70,7 @@ const AddButton: FC<AddButtonProps> = ({
   };
 
   return (
-    <div className="py-4">
+    <div id={element_id} className="py-4">
       {inCart ? (
         <div className="flex justify-between">
           <button
