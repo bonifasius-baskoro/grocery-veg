@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import {DM_Sans} from "next/font/google"
+import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import ReactQueryProvider from "@/utils/provider/QueryProvider";
+import ProductSelectProvider from "@/utils/provider/ProductSelectProvider";
 
 const dm_serif = DM_Sans({
-  weight:["100","200","400","700"],
-  subsets:["latin"]
-})
+  weight: ["100", "200", "400", "700"],
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,12 +23,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ReactQueryProvider>
-
-      <body
-        className={`${dm_serif.className} antialiased`}
-      >
-        {children}
-      </body>
+        <ProductSelectProvider>
+          <body className={`${dm_serif.className} antialiased`}>
+            {children}
+          </body>
+        </ProductSelectProvider>
       </ReactQueryProvider>
     </html>
   );

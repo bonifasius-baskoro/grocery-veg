@@ -2,11 +2,14 @@
 
 import Card from "@/components/Card/Card";
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
-import { CartItem, Product } from "./types/project";
+import { useContext, useEffect, useMemo, useState } from "react";
+import { CartItem, Product, ProductSelectProviderType } from "./types/project";
 import { useProduct } from "@/hooks/useProduct";
 import CategoryButton from "@/components/CategoryButton";
 import { useCart } from "@/hooks/useCart";
+import CartDisplay from "@/components/CartDisplay";
+import ProductDetailCard from "@/components/ProductDetail/ProductDetailCard";
+import { ProductSelectContext } from "@/utils/provider/ProductSelectProvider";
 
 const getCategoryProduct = (data: Product[]): string[] => {
   const arrayStr = new Set<string>();
@@ -18,31 +21,34 @@ const getCategoryProduct = (data: Product[]): string[] => {
   return Array.from(arrayStr);
 };
 
-const checkItemInCart = (data:CartItem[]|undefined,productName:String) =>{
-  if(!data){
+const checkItemInCart = (data: CartItem[] | undefined, productName: String) => {
+  if (!data) {
     return false;
   }
-  return data.some(e=> e.product.name === productName);
-}
+  return data.some((e) => e.product.name === productName);
+};
 
-const getItemCart= (data:CartItem[]|undefined, productName:String) =>{
-  if(!data || data == undefined){
+const getItemCart = (data: CartItem[] | undefined, productName: String) => {
+  if (!data || data == undefined) {
     return undefined;
   }
-  return data.find(e=> e.product.name === productName) as CartItem;
-}
+  return data.find((e) => e.product.name === productName) as CartItem;
+};
 
 export default function Home() {
   const [search, setSearch] = useState<string>("");
   const { data, isLoading, isError } = useProduct(search);
-  const {data:cartData, isLoading:isLoadingCart,isError:isErrorCart} = useCart();
+  const { activeProductID, hasNext,hasPrev,navigateProduct, setActiveProduct} = useContext(ProductSelectContext) as ProductSelectProviderType;
+  const {
+    data: cartData,
+    isLoading: isLoadingCart,
+    isError: isErrorCart,
+  } = useCart();
   const [category, setCategory] = useState<string>("all");
 
   const categoryProduct = useMemo(() => getCategoryProduct(data || []), [data]);
 
-  useEffect(() => {
-    console.log(JSON.stringify(categoryProduct));
-  }, [categoryProduct]);
+  useEffect(() => {}, [categoryProduct]);
 
   return (
     <div className="bg-white">
@@ -50,7 +56,11 @@ export default function Home() {
         <h1 className="text-xl font-medium">Vegetables</h1>
       </div>
       <div>
-        <CategoryButton categoryArr={categoryProduct} setCategory={setCategory} activeCategory={category}/>
+        <CategoryButton
+          categoryArr={categoryProduct}
+          setCategory={setCategory}
+          activeCategory={category}
+        />
       </div>
       <section className="flex justify-center px-2">
         <div className=" px-2  w-full" id="cardContainer">
@@ -66,8 +76,8 @@ export default function Home() {
                         key={product.id}
                         isLoading={isLoading}
                         data={product}
-                        isInCart = {checkItemInCart(cartData,product.name)}
-                        cartData = {getItemCart(cartData,product.name)}
+                        isInCart={checkItemInCart(cartData, product.name)}
+                        cartData={getItemCart(cartData, product.name)}
                       />
                     ))}
                 </div>
@@ -75,22 +85,25 @@ export default function Home() {
             ))
           ) : (
             <div className="grid grid-cols-2 gap-2">
-                  {data
-                    ?.filter((product) => product.category === category)
-                    .map((product) => (
-                      <Card
-                        key={product.id}
-                        isLoading={isLoading}
-                        data={product}
-                        isInCart = {checkItemInCart(cartData,product.name)}
-                        cartData = {getItemCart(cartData,product.name)}
-                        
-                      />
-                    ))}
-                </div>
+              {data
+                ?.filter((product) => product.category === category)
+                .map((product) => (
+                  <Card
+                    key={product.id}
+                    isLoading={isLoading}
+                    data={product}
+                    isInCart={checkItemInCart(cartData, product.name)}
+                    cartData={getItemCart(cartData, product.name)}
+                  />
+                ))}
+            </div>
           )}
         </div>
       </section>
+      {
+        activeProductID=== undefined? ("") : (<ProductDetailCard/>)
+      }
+      <CartDisplay/>
     </div>
   );
 }

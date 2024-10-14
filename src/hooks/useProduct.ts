@@ -1,5 +1,6 @@
 import { getProducts } from "@/api/product"
-import { useQuery } from "react-query"
+import { Product } from "@/app/types/project"
+import { useMutation, useQuery } from "react-query"
 
 
 export const  useProduct= (query:string) =>{
@@ -8,7 +9,29 @@ export const  useProduct= (query:string) =>{
         queryFn: async ()=> await getProducts(query)
     })
 
+    const getProduct =  (productName :string) =>{
+        try{
+            const productData = data?.find((prod) => prod.name === productName);
+            return productData;
+        } catch(e){
+            console.error(e);
+            return undefined;
+        }
+        
+    }
 
-    return {data , isLoading, isError};
+    const getProductByID =  (id :string) =>{
+        try{
+            const productData = data?.find((prod) => prod.id === id);
+            return productData;
+        } catch(e){
+            console.error(e);
+            return undefined;
+        }
+        
+    }
+   
+
+    return {data , isLoading, isError, getProduct,getProductByID};
 
 }

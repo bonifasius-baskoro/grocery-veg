@@ -1,15 +1,47 @@
-import { getCart } from "@/api/cart";
+import { addItem, addQuota, getCart, removeItem } from "@/api/cart";
 import { getProducts } from "@/api/product"
-import { useQuery } from "react-query"
+import { useMutation, useQuery, useQueryClient } from "react-query"
 
 
 export const  useCart= () =>{
+    const queryClient = useQueryClient();
     const {data, isLoading, isError} = useQuery({
         queryKey:['cart'],
         queryFn: async ()=> await getCart()
     })
 
 
-    return {data , isLoading, isError};
+    const {mutateAsync : addCartMutation}= useMutation(
+        {   
+            mutationFn:addItem,
+            onSuccess: ()=>{
+                queryClient.invalidateQueries({queryKey:['cart']});
+            },
+        }
+    );
+
+    const {mutateAsync : addQuotaMutation}= useMutation(
+        {   
+            mutationFn:addQuota,
+            onSuccess: ()=>{
+                queryClient.invalidateQueries({queryKey:['cart']});
+            },
+        }
+    );
+
+    const {mutateAsync: removeCartItemMutation}= useMutation(
+        {
+            mutationFn:removeItem,
+            onSuccess:()=>{
+                queryClient.invalidateQueries({queryKey:['cart']});
+            },
+        }
+    )
+
+    
+
+
+    return {data , isLoading, isError, addCartMutation, addQuotaMutation, removeCartItemMutation};
 
 }
+

@@ -21,5 +21,16 @@ export interface Product {
   export interface CartItem{
     product: Product,
     quota: number,
-    
+    id?:string
+
   }
+
+  interface ProductSelectProviderType {
+    activeProductID : number|undefined;
+    hasNext: boolean;
+    hasPrev: boolean;
+    navigateProduct: (params:"next" | "prev") => void;
+    setActiveProduct: (id:string) => void;
+    clearActiveProduct: ()=> void;
+
+}
