@@ -1,13 +1,11 @@
 "use client";
 
-import { Product, ProductSelectProviderType } from "@/app/types/project";
+import {  ProductSelectProviderType } from "@/app/types/project";
 import { useProduct } from "@/hooks/useProduct";
 import React, {
-  act,
   createContext,
   FC,
   ReactNode,
-  use,
   useEffect,
   useState,
 } from "react";
@@ -45,7 +43,7 @@ const ProductSelectProvider: FC<{ children: ReactNode }> = ({ children }) => {
     try {
       setActiveProductID(parseInt(id));
     } catch (e) {
-      console.error;
+      console.error(e);
     }
   };
 

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { FC, useContext, useEffect } from "react";
+import React, { FC, useContext } from "react";
 import AddButton from "./AddButton";
 import {
   CartItem,
@@ -17,9 +17,9 @@ interface CardProps {
 
 const Card: FC<CardProps> = ({ data, isLoading, isInCart, cartData }) => {
   const {
-    setActiveProduct,
+    setActiveProduct
   } = useContext(ProductSelectContext) as ProductSelectProviderType;
-  const handleCardClick = (e: MouseEvent<HTMLDivElement>) => {
+  const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const target = e.target as HTMLElement;
     if (target.id !== 'add-button' && !target.closest('#add-button')) {
       setActiveProduct(data.id);
@@ -45,7 +45,7 @@ const Card: FC<CardProps> = ({ data, isLoading, isInCart, cartData }) => {
             <h1 className="text-2xl">
               {(data.price * data.weight).toFixed(2) + "$"}
             </h1>
-            <h2 className="text-xl font-light"> {data.name}</h2>
+            <h2 id="name" className="text-xl font-light"> {data.name}</h2>
             <AddButton
             element_id = "add-button"
               inCart={isInCart}
@@ -54,7 +54,7 @@ const Card: FC<CardProps> = ({ data, isLoading, isInCart, cartData }) => {
               increment={data.metadata.increment}
               data={data}
               id={cartData?.id}
-            />
+            />  
           </>
         ) : (
           <>

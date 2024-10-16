@@ -1,7 +1,7 @@
 "use client";
 
 import Card from "@/components/Card/Card";
-import Image from "next/image";
+
 import { useContext, useEffect, useMemo, useState } from "react";
 import { CartItem, Product, ProductSelectProviderType } from "./types/project";
 import { useProduct } from "@/hooks/useProduct";
@@ -21,7 +21,7 @@ const getCategoryProduct = (data: Product[]): string[] => {
   return Array.from(arrayStr);
 };
 
-const checkItemInCart = (data: CartItem[] | undefined, productName: String) => {
+const checkItemInCart = (data: CartItem[] | undefined, productName: string) => {
   if (!data) {
     return false;
   }
